@@ -1,12 +1,21 @@
-# Use the official MapServer Docker image
+# Use the official MapServer Docker image as the base
 FROM mapserver/mapserver:latest
 
-# Copy any custom MapServer configuration files (if any) into the container
-# In this example, we’ll add a basic mapfile
-COPY mapfile.map /etc/mapserver/mapfile.map
+# Install Apache
+RUN apt-get update && apt-get install -y apache2 cgi-mapserver && rm -rf /var/lib/apt/lists/*
 
-# Expose the MapServer HTTP service on port 80
+# Enable CGI in Apache
+RUN a2enmod cgi
+
+# Configure Apache to serve MapServer requests
+COPY mapfile.map /var/www/html/mapfile.map
+
+# Set up the Apache configuration for MapServer
+RUN echo "ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/" >> /etc/apache2/conf-enabled/mapserver.conf
+RUN echo "Alias /map /var/www/html/mapfile.map" >> /etc/apache2/conf-enabled/mapserver.conf
+
+# Expose port 80 for the HTTP server
 EXPOSE 80
 
-# Run MapServer in FastCGI mode for HTTP requests
-CMD ["mapserv", "-nh", "/etc/mapserver/mapfile.map"]
+# Start Apache in the foreground
+CMD ["apachectl", "-D", "FOREGROUND"]
