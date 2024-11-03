@@ -4,7 +4,7 @@ MAP
   SIZE 1200 800
   EXTENT 369960 26508 625038 196560  # Exact values from gdalinfo output
   UNITS METERS
-  SHAPEPATH "/data"  # Updated to point to the /data directory
+  SHAPEPATH "/var/www/html/data"  # Updated to point to the /data directory
   IMAGECOLOR 255 255 255
 
   PROJECTION
@@ -24,7 +24,7 @@ MAP
     NAME "Slovenia"
     TYPE RASTER
     STATUS DEFAULT
-    DATA "/data/svn_rjava_1200x800.tif"  # Path to the TIFF file in /data
+    DATA "/var/www/html/data/svn_rjava_1200x800.tif"  # Path to the TIFF file in /data
     PROCESSING "BANDS=1,2,3"
     PROJECTION
       "init=epsg:3794"
@@ -37,7 +37,7 @@ MAP
     TYPE POLYGON  # Assuming it's a polygon dataset; change to POINT or LINE if necessary
     STATUS DEFAULT
     CONNECTIONTYPE OGR
-    CONNECTION "/data/natura2000.geojson"  # Updated path to GeoJSON in /data
+    CONNECTION "/var/www/html/data/natura2000.geojson"  # Updated path to GeoJSON in /data
     PROJECTION
       "init=epsg:3794"
     END
