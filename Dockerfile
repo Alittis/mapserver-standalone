@@ -21,6 +21,8 @@ COPY slovenia.map /var/www/html/slovenia.map
 COPY data/world-administrative-boundaries.shp /var/www/html/data/world-administrative-boundaries.shp
 COPY data/world-administrative-boundaries.dbf /var/www/html/data/world-administrative-boundaries.dbf
 COPY data/world-administrative-boundaries.shx /var/www/html/data/world-administrative-boundaries.shx
+COPY data/svn_rjava_1200x800.tif /var/www/html/data/svn_rjava_1200x800.tif
+COPY data/natura2000.geojson /var/www/html/data/natura2000.geojson
 
 # Configure Apache to serve MapServer requests
 RUN echo "ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/" >> /etc/apache2/conf-enabled/mapserver.conf
