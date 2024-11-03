@@ -15,7 +15,7 @@ RUN a2enmod cgi
 
 # Copy the mapfile configuration and data
 COPY mapfile.map /var/www/html/mapfile.map
-COPY data /var/www/html/data  # Copy the entire data directory with shapefile
+COPY data /var/www/html/data  # Copy the entire data directory with shapefileagain
 
 # Configure Apache to serve MapServer requests
 RUN echo "ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/" >> /etc/apache2/conf-enabled/mapserver.conf
