@@ -1,0 +1,51 @@
+MAP
+  NAME "Slovenia"
+  STATUS ON
+  SIZE 1200 800
+  EXTENT 369960 26508 625038 196560  # Exact values from gdalinfo output
+  UNITS METERS
+  SHAPEPATH "/data"  # Updated to point to the /data directory
+  IMAGECOLOR 255 255 255
+
+  PROJECTION
+    "init=epsg:3794"  # D96 / Slovenia 1996
+  END
+
+  OUTPUTFORMAT
+    NAME "png"
+    DRIVER "AGG/PNG"
+    MIMETYPE "image/png"
+    IMAGEMODE RGB
+    EXTENSION "png"
+  END
+
+  # Background TIFF Layer
+  LAYER
+    NAME "Slovenia"
+    TYPE RASTER
+    STATUS DEFAULT
+    DATA "/data/svn_rjava_1200x800.tif"  # Path to the TIFF file in /data
+    PROCESSING "BANDS=1,2,3"
+    PROJECTION
+      "init=epsg:3794"
+    END
+  END
+
+  # Natura 2000 GeoJSON Layer
+  LAYER
+    NAME "natura2000"
+    TYPE POLYGON  # Assuming it's a polygon dataset; change to POINT or LINE if necessary
+    STATUS DEFAULT
+    CONNECTIONTYPE OGR
+    CONNECTION "/data/natura2000.geojson"  # Updated path to GeoJSON in /data
+    PROJECTION
+      "init=epsg:3794"
+    END
+    CLASS
+      STYLE
+        COLOR 0 255 0  # Fill color for Natura 2000 areas
+        OUTLINECOLOR 0 100 0  # Outline color for the areas
+      END
+    END
+  END
+END
