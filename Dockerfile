@@ -15,6 +15,7 @@ RUN a2enmod cgi
 
 # Copy the mapfile configuration to the Apache web directory
 COPY mapfile.map /var/www/html/mapfile.map
+COPY slovenia.map /var/www/html/slovenia.map
 
 # Copy individual shapefile components to the target directory
 COPY data/world-administrative-boundaries.shp /var/www/html/data/world-administrative-boundaries.shp
