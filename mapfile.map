@@ -1,0 +1,19 @@
+MAP
+    NAME "example_map"
+    STATUS ON
+    SIZE 800 600
+    EXTENT -180 -90 180 90
+    UNITS DD
+
+    LAYER
+        NAME "sample_layer"
+        TYPE POLYGON
+        STATUS DEFAULT
+        DATA "data/world-administrative-boundaries.shp"  # Make sure to add or reference a shapefile
+        CLASS
+            STYLE
+                COLOR 255 0 0  # Red polygons
+            END
+        END
+    END
+END
