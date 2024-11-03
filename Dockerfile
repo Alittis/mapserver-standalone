@@ -7,6 +7,9 @@ USER root
 # Install Apache and MapServer CGI support
 RUN apt-get update && apt-get install -y apache2 cgi-mapserver && rm -rf /var/lib/apt/lists/*
 
+# Disable MapCache by removing its configuration
+RUN rm -f /etc/apache2/mods-enabled/mapcache.conf
+
 # Enable CGI in Apache
 RUN a2enmod cgi
 
