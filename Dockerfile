@@ -13,9 +13,13 @@ RUN rm -f /etc/apache2/mods-enabled/mapcache.conf
 # Enable CGI in Apache
 RUN a2enmod cgi
 
-# Copy the mapfile configuration and data directory
+# Copy the mapfile configuration to the Apache web directory
 COPY mapfile.map /var/www/html/mapfile.map
-COPY data /var/www/html/data  # Copy the data directory with shapefile
+
+# Copy individual shapefile components to the target directory
+COPY data/world-administrative-boundaries.shp /var/www/html/data/world-administrative-boundaries.shp
+COPY data/world-administrative-boundaries.dbf /var/www/html/data/world-administrative-boundaries.dbf
+COPY data/world-administrative-boundaries.shx /var/www/html/data/world-administrative-boundaries.shx
 
 # Configure Apache to serve MapServer requests
 RUN echo "ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/" >> /etc/apache2/conf-enabled/mapserver.conf
