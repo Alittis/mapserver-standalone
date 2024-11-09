@@ -8,18 +8,25 @@ ENV LANG=C.UTF-8
 # Switch to root to install dependencies and configure Apache
 USER root
 
-# Install Apache and MapServer CGI support
-RUN apt-get update && apt-get install -y apache2 cgi-mapserver python3 python3-pip && rm -rf /var/lib/apt/lists/*
+# Install Apache and MapServer CGI support, as well as Python 3.8 and build tools
+RUN apt-get update && apt-get install -y apache2 cgi-mapserver python3.8 python3.8-dev python3-pip build-essential cmake git && rm -rf /var/lib/apt/lists/*
 
-# Disable MapCache by removing its configuration
-RUN rm -f /etc/apache2/mods-enabled/mapcache.conf
+# Set Python 3.8 as the default Python
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 
-# Enable CGI in Apache
-RUN a2enmod cgi
+# Upgrade pip to the latest version for Python 3.8
+RUN python -m pip install --upgrade pip
 
-# Install FastAPI, Uvicorn, and MapScript for Python
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install fastapi uvicorn mapscript
+# Clone MapServer repository and build MapScript from source
+RUN git clone https://github.com/MapServer/MapServer.git /mapserver-src && \
+    cd /mapserver-src && \
+    mkdir build && cd build && \
+    cmake .. -DWITH_PYTHON=ON -DPYTHON_EXECUTABLE=/usr/bin/python3.8 && \
+    make && \
+    make install
+
+# Install FastAPI and Uvicorn
+RUN python -m pip install fastapi uvicorn
 
 # Copy the mapfile configuration to the Apache web directory
 COPY slovenia.map /var/www/html/slovenia.map
