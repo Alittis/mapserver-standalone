@@ -1,6 +1,10 @@
 # Use the official MapServer Docker image as the base
 FROM mapserver/mapserver:latest
 
+# Set UTF-8 locale environment variables
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
 # Switch to root to install dependencies and configure Apache
 USER root
 
