@@ -8,8 +8,8 @@ ENV LANG=C.UTF-8
 # Switch to root to install dependencies and configure Apache
 USER root
 
-# Install Apache and MapServer CGI support, as well as Python 3.8 and build tools
-RUN apt-get update && apt-get install -y apache2 cgi-mapserver python3.8 python3.8-dev python3-pip build-essential cmake git && rm -rf /var/lib/apt/lists/*
+# Install Apache, MapServer CGI support, Python 3.8, and other build dependencies
+RUN apt-get update && apt-get install -y apache2 cgi-mapserver python3.8 python3.8-dev python3-pip build-essential git wget && rm -rf /var/lib/apt/lists/*
 
 # Set Python 3.8 as the default Python
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
@@ -17,11 +17,17 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.8 1
 # Upgrade pip to the latest version for Python 3.8
 RUN python -m pip install --upgrade pip
 
+# Install CMake 3.20
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0-linux-x86_64.sh && \
+    chmod +x cmake-3.20.0-linux-x86_64.sh && \
+    ./cmake-3.20.0-linux-x86_64.sh --skip-license --prefix=/usr/local && \
+    rm cmake-3.20.0-linux-x86_64.sh
+
 # Clone MapServer repository and build MapScript from source
 RUN git clone https://github.com/MapServer/MapServer.git /mapserver-src && \
     cd /mapserver-src && \
     mkdir build && cd build && \
-    cmake .. -DWITH_PYTHON=ON -DPYTHON_EXECUTABLE=/usr/bin/python3.8 && \
+    /usr/local/bin/cmake .. -DWITH_PYTHON=ON -DPYTHON_EXECUTABLE=/usr/bin/python3.8 && \
     make && \
     make install
 
